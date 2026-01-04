@@ -21,7 +21,7 @@
             font-family: 'Montserrat', sans-serif; overflow: hidden;
         }
 
-        /* --- 1. OPENING OVERLAY (UNTUK AUTOPLAY) --- */
+        /* --- 1. OPENING OVERLAY --- */
         #opening-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg); z-index: 20000;
@@ -73,54 +73,69 @@
             position: relative; width: 100vw; height: 65vh;
             display: flex; justify-content: center; align-items: center;
             perspective: 1200px; z-index: 10;
+            transition: z-index 0.5s;
         }
 
+        #scene.active { z-index: 1500; }
+
         .video-box {
-            position: relative;
-            /* width: 350px;  <-- HAPUS BARIS INI (jangan di-fix lebarnya) */
-            background: white;
-            padding: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
-            border-radius: 4px; /* Sedikit lebih bulat sudutnya */
-            z-index: 5;
-            /* Tambahkan ini agar bingkai putih membungkus video dengan pas */
-            display: inline-block; 
+            position: relative; background: white; padding: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05); border-radius: 4px;
+            z-index: 5; display: inline-block; 
         }
 
         video {
-            /* width: 100%; <-- HAPUS BARIS INI */
-            display: block;
-            border-radius: 2px;
-            /* INI KUNCINYA UNTUK PORTRAIT: */
-            height: auto;  /* Tinggi otomatis */
-            width: auto;   /* Lebar otomatis */
-            max-height: 60vh; /* Batasi tingginya maksimal 60% dari layar agar tidak kepanjangan */
-            max-width: 90vw;  /* Jaga-jaga agar tidak melebihi lebar layar HP */
+            display: block; border-radius: 2px;
+            height: auto; width: auto;
+            max-height: 55vh; max-width: 85vw;
         }
 
+        /* --- CARD CSS FIXED --- */
         .card {
-            position: absolute; background: white; padding: 10px 10px 35px 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03); z-index: 2;
+            position: absolute;
+            background: white;
+            padding: 12px 12px 15px 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            z-index: 2;
+            transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 165px;
+            height: auto; /* Biar tinggi menyesuaikan konten */
         }
 
-        .card img { width: 130px; height: 170px; object-fit: cover; pointer-events: none; }
+        .card img {
+            width: 100%; 
+            height: 190px;
+            object-fit: cover;
+            pointer-events: none;
+            display: block;
+        }
 
-        .card::after {
-            content: attr(data-year); position: absolute; bottom: 10px; left: 0;
-            width: 100%; text-align: center; font-family: 'Cormorant Garamond', serif;
-            font-style: italic; font-size: 0.9rem; color: #999;
+        .card-caption {
+            margin: 12px 0 5px 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #999;
+            width: 100%;
+            text-align: center;
         }
 
         .card.focused {
-            position: fixed !important; top: 50% !important; left: 50% !important;
-            transform: translate(-50%, -50%) scale(1.6) rotate(0deg) !important;
-            z-index: 2000 !important;
+            position: fixed !important; 
+            top: 50% !important; 
+            left: 50% !important;
+            transform: translate(-50%, -50%) scale(1.8) rotate(0deg) !important;
+            z-index: 5000 !important;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.2);
         }
 
         #bg-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--overlay); backdrop-filter: blur(5px);
+            background: var(--overlay); backdrop-filter: blur(8px);
             opacity: 0; visibility: hidden; z-index: 900; transition: 0.5s;
         }
 
@@ -164,20 +179,43 @@
             </video>
         </div>
 
-        <div class="card" data-year="2020" style="top: 5%; left: 10%;"><img src="2020.jpg"></div>
-        <div class="card" data-year="2021" style="top: -5%; right: 15%;"><img src="2021.jpg"></div>
-        <div class="card" data-year="2022" style="bottom: 10%; left: 15%;"><img src="2022.jpg"></div>
-        <div class="card" data-year="2023" style="bottom: 0%; right: 10%;"><img src="2023.jpg"></div>
-        <div class="card" data-year="2024" style="top: 40%; left: 2%;"><img src="2024.jpg"></div>
-        <div class="card" data-year="2025" style="top: 45%; right: 2%;"><img src="2025.jpg"></div>
+        <div class="card" style="top: 5%; left: 8%;">
+            <img src="2020.jpg">
+            <p class="card-caption">2020</p>
+        </div>
+        
+        <div class="card" style="top: 2%; left: 70%;">
+            <img src="2021.jpg">
+             <p class="card-caption">2021</p>
+        </div>
+        
+        <div class="card" style="top: 65%; left: 12%;">
+            <img src="2022.jpg">
+             <p class="card-caption">2022</p>
+        </div>
+        
+        <div class="card" style="top: 70%; left: 72%;">
+            <img src="2023.jpg">
+             <p class="card-caption">2023</p>
+        </div>
+        
+        <div class="card" style="top: 40%; left: 2%;">
+            <img src="2024.jpg">
+             <p class="card-caption">2024</p>
+        </div>
+        
+         <div class="card" style="top: 45%; left: 80%;">
+            <img src="2025.jpg">
+             <p class="card-caption">2025</p>
+        </div>
     </div>
 
     <div class="btn-note" onclick="toggleNote()">✉</div>
     
     <div class="note-content" id="note">
-        <h3 style="font-style: italic;">Untuk Sayangku,,</h3>
+        <h3 style="font-style: italic;">Untuk Sayangku,</h3>
         <p>Enam tahun yang luar biasa. Setiap detik bersamamu adalah bagian favorit dalam hidupku. Terima kasih Sayang. ❤️</p>
-        <button onclick="toggleNote()" style="border:none; background:none; color:var(--accent); margin-top:15px;">( close )</button>
+        <button onclick="toggleNote()" style="border:none; background:none; color:var(--accent); margin-top:15px; cursor: pointer;">( close )</button>
     </div>
 
     <audio id="bg-music" loop>
@@ -191,26 +229,21 @@
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         const cards = document.querySelectorAll('.card');
+        const scene = document.getElementById('scene');
+        const bgOverlay = document.getElementById('bg-overlay');
 
         let mouseX = 0, mouseY = 0;
 
-        // --- FUNGSI START (AUTOPLAY TERJADI DISINI) ---
         function startEverything() {
-            // Putar Musik & Video
             music.play().catch(e => console.log("Autoplay blocked"));
             document.getElementById('myVideo').play();
-            document.getElementById('myVideo').muted = false; // Unmute video jika ingin ada suaranya
-
-            // Hilangkan Overlay
+            document.getElementById('myVideo').muted = false;
             overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.visibility = 'hidden';
-            }, 1000);
+            setTimeout(() => { overlay.style.visibility = 'hidden'; }, 1000);
         }
 
-        // --- LIVE COUNTER ---
         function updateCounter() {
-            const start = new Date('2019-01-01T00:00:00'); // GANTI TANGGAL DISINI
+            const start = new Date('2019-01-01T00:00:00'); 
             const now = new Date();
             const diff = now - start;
             const d = Math.floor(diff / 86400000);
@@ -222,27 +255,25 @@
         setInterval(updateCounter, 1000);
         updateCounter();
 
-        // --- CURSOR & PARALLAX ---
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
             cursor.style.left = mouseX + 'px';
             cursor.style.top = mouseY + 'px';
 
             if (!document.querySelector('.focused')) {
-                const x = (mouseX - window.innerWidth/2) / 50;
-                const y = (mouseY - window.innerHeight/2) / 50;
+                const x = (mouseX - window.innerWidth/2) / 60;
+                const y = (mouseY - window.innerHeight/2) / 60;
                 cards.forEach((card, i) => {
                     const rect = card.getBoundingClientRect();
                     const cardX = rect.left + rect.width/2;
                     const cardY = rect.top + rect.height/2;
-                    const angleX = (cardY - mouseY) / 20;
-                    const angleY = (mouseX - cardX) / 20;
-                    card.style.transform = `translate(${x * (i+1)}px, ${y * (i+1)}px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+                    const angleX = (cardY - mouseY) / 25;
+                    const angleY = (mouseX - cardX) / 25;
+                    card.style.transform = `translate(${x * (i+1)}px, ${y * (i+1)}px) rotateX(${angleX/2}deg) rotateY(${angleY/2}deg)`;
                 });
             }
         });
 
-        // --- PARTICLES ---
         let particles = [];
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         class Particle {
@@ -274,23 +305,41 @@
         }
         animate();
 
-        // --- FOCUS & NOTE ---
         cards.forEach(card => {
-            card.addEventListener('click', () => {
+            card.addEventListener('click', (e) => {
                 const isFocused = card.classList.contains('focused');
                 cards.forEach(c => c.classList.remove('focused'));
-                document.getElementById('bg-overlay').classList.remove('active');
+                
                 if (!isFocused) {
                     card.classList.add('focused');
-                    document.getElementById('bg-overlay').classList.add('active');
+                    bgOverlay.classList.add('active');
+                    scene.classList.add('active');
+                } else {
+                    bgOverlay.classList.remove('active');
+                    scene.classList.remove('active');
                 }
             });
         });
 
+        bgOverlay.addEventListener('click', () => {
+            cards.forEach(c => c.classList.remove('focused'));
+            bgOverlay.classList.remove('active');
+            scene.classList.remove('active');
+            document.getElementById('note').style.display = 'none';
+        });
+
         function toggleNote() {
             const n = document.getElementById('note');
-            n.style.display = (n.style.display === 'block') ? 'none' : 'block';
-            document.getElementById('bg-overlay').classList.toggle('active');
+            const isVisible = n.style.display === 'block';
+            n.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                bgOverlay.classList.add('active');
+                scene.classList.add('active');
+            } else {
+                bgOverlay.classList.remove('active');
+                scene.classList.remove('active');
+            }
         }
     </script>
 </body>
